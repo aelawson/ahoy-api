@@ -1,8 +1,10 @@
 version: '2'
 services:
-  ahoy-api:
+  api:
     build: .
     volumes:
       - .:/opt/app
     ports:
       - 8000:8000
+    environment:
+      - PYTHONUNBUFFERED=TRUE
