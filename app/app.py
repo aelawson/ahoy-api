@@ -7,4 +7,4 @@ def application(env, start_response):
         response.status['status'],
         response.headers
     )
-    return response.body
+    return [response.body]

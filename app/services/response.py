@@ -7,10 +7,16 @@ class Response:
             'status': '200 OK'
         }
     }
+    DEFAULT_HEADERS = [
+        ('Content-Type', 'text/plain')
+    ]
 
-    def __init__(self, status=200, headers=[], body={}):
+    def __init__(self, status=200, headers=None, body={}):
+        if not headers:
+            self.headers = self.__class__.DEFAULT_HEADERS
+        else:
+            self.headers = headers
         self.body = body,
-        self.headers = headers,
         self.status = self.__class__.RESPONSE_MAP.get(status)
 
     def set_status(self, status):

@@ -17,4 +17,4 @@ WORKDIR /opt/app/app
 EXPOSE 8000
 
 # Run app.py when the container launches
-CMD ["gunicorn", "-b :8000", "app:application", "--enable-stdio-inheritance --reload"]
+CMD ["gunicorn", "-b :8000", "--reload", "app:application", "--enable-stdio-inheritance"]
