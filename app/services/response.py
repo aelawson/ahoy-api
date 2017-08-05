@@ -1,23 +1,21 @@
 import json
 
+from services.headers import Headers
+from services.status_codes import StatusCodes
+
 class Response:
 
-    RESPONSE_MAP = {
-        200: {
-            'status': '200 OK'
-        }
-    }
-    DEFAULT_HEADERS = [
-        ('Content-Type', 'text/plain')
-    ]
-
-    def __init__(self, status=200, headers=None, body={}):
+    def __init__(self, status_code=200, headers=None, body={}):
         if not headers:
-            self.headers = self.__class__.DEFAULT_HEADERS
+            self.headers = Headers.get_default_headers(body)
         else:
             self.headers = headers
         self.body = body,
-        self.status = self.__class__.RESPONSE_MAP.get(status)
+        self.status = StatusCodes.get_status_message(status_code)
 
-    def set_status(self, status):
-        self.status = self.__class__.RESPONSE_MAP.get(status)
+    def set_status(self, status_code):
+        self.status = StatusCodes.get_status_message(status_code)
+
+    def set_body(self, body):
+        self.body = body
+        self.headers = Headers.get_default_headers(body)
