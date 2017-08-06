@@ -8,11 +8,3 @@ services:
       - 8000:8000
     environment:
       - PYTHONUNBUFFERED=TRUE
-  api-test:
-    build: .
-    ports:
-      - 8000:8000
-    environment:
-      - PYTHONUNBUFFERED=TRUE
-    working_dir: /opt/app/
-    command: pytest

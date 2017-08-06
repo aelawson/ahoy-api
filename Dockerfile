@@ -15,4 +15,5 @@ RUN pip3 install -r requirements.txt
 EXPOSE 8000
 
 # Run app.py when the container launches
-CMD ["gunicorn", "-b :8000", "--reload", "app:application", "--enable-stdio-inheritance"]
+ENTRYPOINT ["python", "run.py"]
+CMD ["run"]
