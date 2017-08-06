@@ -1,4 +1,4 @@
-from app.services.headers import Headers
+from src.services.headers import Headers
 
 class TestHeaders:
 

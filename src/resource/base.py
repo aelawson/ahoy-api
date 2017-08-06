@@ -1,4 +1,4 @@
-from utilities.decorators import handle_response
+from src.utilities.decorators import handle_response
 
 class BaseResource:
 

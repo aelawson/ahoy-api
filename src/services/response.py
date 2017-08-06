@@ -1,11 +1,11 @@
 import json
 
-from services.headers import Headers
-from services.status_codes import StatusCodes
+from src.services.headers import Headers
+from src.services.status_codes import StatusCodes
 
 class Response:
 
-    def __init__(self, status_code=200, headers=None, body={}):
+    def __init__(self, status_code=200, headers=None, body=b''):
         if not headers:
             self.headers = Headers.get_default_headers(body)
         else:
