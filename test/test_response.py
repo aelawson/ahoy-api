@@ -41,10 +41,10 @@ class TestResponse:
             response['status'] = status
             response['headers'] = headers
 
-        headers = [
-            ('Content-Type', 'application/json'),
-            ('Content-Length', '100')
-        ]
+        headers = {
+            'Content-Type': 'application/json',
+            'Content-Length': '100'
+        }
         response_body = Response.response(
             start_response,
             headers=headers
@@ -72,6 +72,6 @@ class TestResponse:
         assert response['status'] == '200 OK'
         assert response['headers'] == [
             ('Content-Type', 'text/plain'),
-            ('Content-Length', '12')
+            ('Content-Length', '0')
         ]
         assert response_body == [b'Hello World!']
