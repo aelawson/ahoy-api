@@ -12,6 +12,8 @@ class Headers:
 
     @classmethod
     def get_headers(cls, headers):
+        if not headers:
+            return cls.get_default_headers([]])
         return [
             (header, value) for header, value in headers.items()
         ]

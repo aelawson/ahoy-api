@@ -7,10 +7,7 @@ class Response:
 
     @classmethod
     def response(cls, start_response, status_code=200, headers=None, body=b''):
-        if not headers:
-            headers = Headers.get_default_headers(body)
-        else:
-            headers = Headers.get_headers(headers)
+        headers = Headers.get_headers(headers)
         status = Status.get_status_message(status_code)
         start_response(
             status['status'],
