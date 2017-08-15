@@ -1,23 +1,24 @@
 from src.utilities.decorators import handle_response
+from src.utilities.exceptions import MethodNotImplementedException
 
 class BaseResource:
 
     # Overridable Hooks
 
     def get(self):
-        raise NotImplementedError
+        raise MethodNotImplementedException
 
     def post(self):
-        raise NotImplementedError
+        raise MethodNotImplementedException
 
     def put(self):
-        raise NotImplementedError
+        raise MethodNotImplementedException
 
     def patch(self):
-        raise NotImplementedError
+        raise MethodNotImplementedException
 
     def delete(self):
-        raise NotImplementedError
+        raise MethodNotImplementedException
 
     # HTTP Method Handlers
 
