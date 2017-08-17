@@ -5,7 +5,7 @@ WORKDIR /opt/app
 COPY . /opt/app
 
 # Install dependencies
-RUN  apk --no-cache add bash python3 \
+RUN  apk --no-cache add bash git python3 \
   && ln -s /usr/bin/python3 /usr/bin/python
 
 # Install any needed packages specified in requirements.txt
