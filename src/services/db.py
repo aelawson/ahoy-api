@@ -1,7 +1,7 @@
 
 import os
 
-from orator import DatabaseManager
+from orator import DatabaseManager, Schema
 
 db_config = {
     'postgres': {
@@ -15,3 +15,4 @@ db_config = {
 }
 
 db = DatabaseManager(db_config)
+schema = Schema(db)
