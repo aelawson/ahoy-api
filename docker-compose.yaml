@@ -8,3 +8,11 @@ services:
       - 8000:8000
     environment:
       - PYTHONUNBUFFERED=TRUE
+    depends_on:
+      - db
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: database
