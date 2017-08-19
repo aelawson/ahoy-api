@@ -1,4 +1,5 @@
-from orator import Migration
+from orator.migrations import Migration
+
 
 class CreateTableReleases(Migration):
 
@@ -10,9 +11,10 @@ class CreateTableReleases(Migration):
             table.increments('id')
             table.small_integer('team_id').unsigned()
             table.small_integer('release_id').unsigned()
+            table.timestamps()
 
     def down(self):
         """
-        Rollback the migration.
+        Revert the migrations.
         """
         self.schema.drop('releases')
