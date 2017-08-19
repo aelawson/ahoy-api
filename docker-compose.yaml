@@ -7,7 +7,8 @@ services:
     ports:
       - 8000:8000
     environment:
-      - PYTHONUNBUFFERED=TRUE
+      DB_HOST: db
+      PYTHONUNBUFFERED: "TRUE"
     depends_on:
       - db
   db:
