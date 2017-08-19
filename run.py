@@ -13,6 +13,8 @@ elif args.cmd.lower() == 'migrate':
     command = 'orator migrate -c ./src/services/db_config.py'
 elif args.cmd.lower() == 'migrations':
     command = 'orator migrate:status -c ./src/services/db_config.py'
+elif args.cmd.lower() == 'refresh':
+    command = 'orator migrate:refresh -c ./src/services/db_config.py --seed'
 elif args.cmd.lower() == 'rollback':
     command = 'orator migrate:reset  -c ./src/services/db_config.py'
 elif args.cmd.lower() == "run":
