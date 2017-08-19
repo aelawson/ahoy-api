@@ -12,6 +12,7 @@ class CreateTableProjects(Migration):
             table.small_integer('project_id').unsigned()
             table.small_integer('team_id').unsigned()
             table.string('project_name', 100)
+            table.string('repo_url', 255)
             table.timestamps()
 
     def down(self):
