@@ -1,18 +1,5 @@
-
-import os
-
+from src.services.db_config import DATABASES
 from orator import DatabaseManager, Schema
 
-db_config = {
-    'postgres': {
-        'driver': 'postgres',
-        'host': os.environ.get('DB_HOST', 'localhost'),
-        'database': os.environ.get('DB_DATABASE', 'database'),
-        'user': os.environ.get('DB_USER', 'root'),
-        'password': os.environ.get('DB_PASS', 'root'),
-        'prefix': os.environ.get('DB_PREFIX', '')
-    }
-}
-
-db = DatabaseManager(db_config)
+db = DatabaseManager(DATABASES)
 schema = Schema(db)
