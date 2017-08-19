@@ -9,7 +9,7 @@ class CreateTableStages(Migration):
         """
         with self.schema.create('stages') as table:
             table.increments('id')
-            table.small_integer(stage_id).unsigned()
+            table.small_integer('stage_id').unsigned()
             table.string('stage_name', 50)
             table.small_integer('stage_order').unsigned()
 
