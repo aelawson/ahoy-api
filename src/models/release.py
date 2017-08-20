@@ -8,5 +8,5 @@ class Release(Model):
         return Project
 
     @belongs_to('foreign_key')
-    def team(self):
-        return Team
+    def plan(self):
+        return Plan

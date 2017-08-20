@@ -7,6 +7,6 @@ class Team(Model):
     def projects(self):
         return Project
 
-    @has_many('foreign_key')
-    def releases(self):
-        return Release
+    @has_one('foreign_key')
+    def plan(self):
+        return Plan
