@@ -8,12 +8,16 @@ class CreateTableProjects(Migration):
         Run the migrations.
         """
         with self.schema.create('projects') as table:
-            table.increments('id')
-            table.small_integer('project_id').unsigned()
-            table.small_integer('team_id').unsigned()
+            table.increments('project_id').unsigned()
+            table.integer('team_id').unsigned()
             table.string('project_name', 100)
             table.string('repo_url', 255)
             table.timestamps()
+            # Keys
+            table.foreign('team_id')\
+                .references('team_id')\
+                .on('teams')\
+                .on_delete('cascade')
 
     def down(self):
         """

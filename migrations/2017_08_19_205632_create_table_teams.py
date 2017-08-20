@@ -8,8 +8,7 @@ class CreateTableTeams(Migration):
         Run the migrations.
         """
         with self.schema.create('teams') as table:
-            table.increments('id')
-            table.small_integer('team_id').unsigned()
+            table.increments('team_id').unsigned()
             table.string('team_name', 100)
             table.timestamps()
 

@@ -1,6 +1,5 @@
 from orator.migrations import Migration
 
-
 class CreateTableReleases(Migration):
 
     def up(self):
@@ -8,10 +7,19 @@ class CreateTableReleases(Migration):
         Run the migrations.
         """
         with self.schema.create('releases') as table:
-            table.increments('id')
-            table.small_integer('team_id').unsigned()
-            table.small_integer('release_id').unsigned()
+            table.increments('release_id').unsigned()
+            table.integer('team_id').unsigned()
+            table.integer('project_id').unsigned()
             table.timestamps()
+            # Keys
+            table.foreign('team_id')\
+                .references('team_id')\
+                .on('teams')\
+                .on_delete('cascade')
+            table.foreign('project_id')\
+                .references('project_id')\
+                .on('projects')\
+                .on_delete('cascade')
 
     def down(self):
         """
