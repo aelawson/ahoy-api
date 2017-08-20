@@ -1,4 +1,8 @@
 from orator import Model
+from orator.orm import belongs_to
 
 class Stage(Model):
-    pass
+
+    @belongs_to('foreign_key')
+    def release_stage(self):
+        return ReleaseStage
