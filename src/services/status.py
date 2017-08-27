@@ -2,15 +2,10 @@
 class Status:
 
     STATUS_MAP = {
-        200: {
-            'status': '200 OK'
-        },
-        404: {
-            'status': '404 Not Found'
-        },
-        500: {
-            'status': '500 Internal Server Error'
-        }
+        200: '200 OK',
+        404: '404 Not Found',
+        405: '405 Method Not Allowed',
+        500: '500 Internal Server Error'
     }
 
     @classmethod
