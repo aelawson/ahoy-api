@@ -7,18 +7,13 @@ class CreateTablePlans(Migration):
         Run the migrations.
         """
         with self.schema.create('plans') as table:
-            table.increments('plan_id').unsigned()
+            table.increments('id').unsigned()
             table.integer('team_id').unsigned()
-            table.integer('release_id').unsigned()
             table.timestamps()
             # Keys
             table.foreign('team_id')\
-                .references('team_id')\
+                .references('id')\
                 .on('teams')\
-                .on_delete('cascade')
-            table.foreign('release_id')\
-                .references('release_id')\
-                .on('releases')\
                 .on_delete('cascade')
 
     def down(self):

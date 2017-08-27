@@ -1,6 +1,5 @@
 from orator.migrations import Migration
 
-
 class CreateTableStages(Migration):
 
     def up(self):
@@ -8,7 +7,7 @@ class CreateTableStages(Migration):
         Run the migrations.
         """
         with self.schema.create('stages') as table:
-            table.increments('stage_id').unsigned()
+            table.increments('id').unsigned()
             table.string('stage_name', 50)
             table.small_integer('stage_order').unsigned()
 

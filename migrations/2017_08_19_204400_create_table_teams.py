@@ -1,6 +1,5 @@
 from orator.migrations import Migration
 
-
 class CreateTableTeams(Migration):
 
     def up(self):
@@ -8,7 +7,7 @@ class CreateTableTeams(Migration):
         Run the migrations.
         """
         with self.schema.create('teams') as table:
-            table.increments('team_id').unsigned()
+            table.increments('id').unsigned()
             table.string('team_name', 100)
             table.timestamps()
 
