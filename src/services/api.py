@@ -69,7 +69,7 @@ class Api:
             return Response.response(
                 start_response,
                 404
-             )
+            )
 
     def methods(self, route_methods):
         def __decorator(cls):
@@ -108,7 +108,6 @@ class Api:
         return __decorator
 
     def _add_header(self, response, header, value):
-        print(response)
         if not response.get('headers'):
             response['headers'] = {}
         response['headers'][header] = value
