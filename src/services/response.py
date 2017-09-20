@@ -7,7 +7,7 @@ class Response:
 
     @classmethod
     def response(cls, start_response, status_code=200, headers=None, body=''):
-        headers = Headers.construct_headers(headers)
+        headers = Headers.construct_headers(headers, body=body)
         status = Status.get_status_message(status_code)
         start_response(
             status,
