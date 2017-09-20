@@ -5,7 +5,7 @@ class Headers:
     }
 
     @classmethod
-    def construct_headers(cls, headers, body=''):
+    def construct_headers(cls, headers=None, body=''):
         if not headers:
             headers = cls.DEFAULT_HEADERS
         headers['Content-Length'] = str(len(body))
