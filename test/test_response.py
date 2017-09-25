@@ -1,4 +1,5 @@
 from src.services.response import Response
+from test.utils import compare_sorted
 
 class TestResponse:
 
@@ -10,12 +11,16 @@ class TestResponse:
 
         response_body = Response.response(start_response)
 
-        assert response['status'] == '200 OK'
-        assert response['headers'] == [
+        expected_body = [b'']
+        expected_status = '200 OK'
+        expected_headers = [
             ('Content-Type', 'text/plain'),
             ('Content-Length', '0')
         ]
-        assert response_body == [b'']
+
+        compare_sorted(response['status'], expected_status)
+        compare_sorted(response['headers'], expected_headers)
+        assert response_body == expected_body
 
     def test_response_init_status_code(self):
         response = {}
@@ -28,12 +33,16 @@ class TestResponse:
             status_code=200
         )
 
-        assert response['status'] == '200 OK'
-        assert response['headers'] == [
+        expected_body = [b'']
+        expected_status = '200 OK'
+        expected_headers = [
             ('Content-Type', 'text/plain'),
             ('Content-Length', '0')
         ]
-        assert response_body == [b'']
+
+        compare_sorted(response['status'], expected_status)
+        compare_sorted(response['headers'], expected_headers)
+        assert response_body == expected_body
 
     def test_response_init_headers(self):
         response = {}
@@ -50,12 +59,16 @@ class TestResponse:
             headers=headers
         )
 
-        assert response['status'] == '200 OK'
-        assert response['headers'] == [
+        expected_body = [b'']
+        expected_status = '200 OK'
+        expected_headers = [
             ('Content-Type', 'application/json'),
             ('Content-Length', '100')
         ]
-        assert response_body == [b'']
+
+        compare_sorted(response['status'], expected_status)
+        compare_sorted(response['headers'], expected_headers)
+        assert response_body == expected_body
 
     def test_response_init_body(self):
         response = {}
@@ -63,15 +76,19 @@ class TestResponse:
             response['status'] = status
             response['headers'] = headers
 
-        body = b'Hello World!'
+        body = 'Hello World!'
         response_body = Response.response(
             start_response,
             body=body
         )
 
-        assert response['status'] == '200 OK'
-        assert response['headers'] == [
+        expected_body = [b'Hello World!']
+        expected_status = '200 OK'
+        expected_headers = [
             ('Content-Type', 'text/plain'),
             ('Content-Length', '0')
         ]
-        assert response_body == [b'Hello World!']
+
+        compare_sorted(response['status'], expected_status)
+        compare_sorted(response['headers'], expected_headers)
+        assert response_body == expected_body

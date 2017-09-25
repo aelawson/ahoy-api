@@ -1,16 +1,7 @@
 from src.services.headers import Headers
+from test.utils import compare_sorted
 
 class TestHeaders:
-
-    @staticmethod
-    def header_key(header):
-        return header[0]
-
-    @staticmethod
-    def compare_sorted(actual, expected):
-        actual = sorted(actual, key=TestHeaders.header_key)
-        expected = sorted(expected, key=TestHeaders.header_key)
-        return actual == expected
 
     def test_default_headers_no_body(self):
         expected_result = [
@@ -19,7 +10,7 @@ class TestHeaders:
         ]
         actual_result = Headers.construct_headers()
 
-        assert TestHeaders.compare_sorted(actual_result, expected_result)
+        assert compare_sorted(actual_result, expected_result)
 
     def test_default_headers_with_body(self):
         body = b'abcdefg'
@@ -29,7 +20,7 @@ class TestHeaders:
         ]
         actual_result = Headers.construct_headers(body=body)
 
-        assert TestHeaders.compare_sorted(actual_result, expected_result)
+        assert compare_sorted(actual_result, expected_result)
 
     def test_headers_no_body(self):
         headers = {
@@ -43,7 +34,7 @@ class TestHeaders:
         ]
         actual_result = Headers.construct_headers(headers=headers)
 
-        assert TestHeaders.compare_sorted(actual_result, expected_result)
+        assert compare_sorted(actual_result, expected_result)
 
     def test_headers_with_body(self):
         body = b'abcdefg'
@@ -58,4 +49,4 @@ class TestHeaders:
         ]
         actual_result = Headers.construct_headers(headers=headers, body=body)
 
-        assert TestHeaders.compare_sorted(actual_result, expected_result)
+        assert compare_sorted(actual_result, expected_result)
