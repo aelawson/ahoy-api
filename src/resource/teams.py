@@ -16,21 +16,15 @@ class TeamsResource(BaseResource):
             'body': teams.serialize()
         }
 
-@api.route('/teams/<id>/')
+@api.route('/teams/<team_id>/')
 @api.methods(['HEAD', 'OPTIONS', 'GET'])
 class TeamResource(BaseResource):
 
     @api.json
     def get(*args, **kwargs):
-        team_id = kwargs.get('id')
-        if team_id:
-            team = Team.where('id', team_id).get()
-            return {
-                'status_code': 200,
-                'body': team.serialize()
-            }
-        else:
-            return {
-                'status_code': 405
-            }
-            
+        team_id = kwargs.get('team_id')
+        team = Team.find(team_id)
+        return {
+            'status_code': 200,
+            'body': team.serialize()
+        }
