@@ -1,6 +1,8 @@
 import json
+import re
 
 from src.services.response import Response
+from src.utilities.exceptions import InvalidRouteFormatException
 
 class Api:
 
@@ -14,20 +16,34 @@ class Api:
         'DELETE'
     ]
 
+    @classmethod
+    def build_route_pattern(cls, route):
+        if re.match(r'^/([<>_\w]+/)*$', route):
+            route_pattern = re.sub(
+                r'(<\w+>)/',
+                r'(?:(?<=/)(?:(?P\1[^<>/])/))',
+                route
+            )
+            if route_pattern != route:
+                route_pattern += '?'
+            return re.compile("^{pattern}$".format(pattern=route_pattern))
+        else:
+            raise InvalidRouteFormatException
+
     def __init__(self):
-        self.routes = {}
+        self.routes = []
         self.resources = {}
 
     def handle_request(self, start_response, env):
         method = env.get('REQUEST_METHOD')
         query = env.get('QUERY_STRING')
         path = env.get('RAW_URI')
-        params = None
 
-        resource = self.routes.get(path)
+        route_match = self.match_route(path)
 
-        if resource:
-            methods = self.resources[type(resource).__name__]['methods']
+        if route_match:
+            resource, params = route_match
+            methods = self.resources[type(resource).__name__].get('methods')
             if not methods or method not in methods:
                 return Response.response(
                     start_response,
@@ -35,20 +51,20 @@ class Api:
                 )
 
             if method == 'OPTIONS':
-                headers = { 'Allow' : ', '.join(methods) }
+                headers = {
+                    'Allow' : ', '.join(methods)
+                }
                 return Response.response(
                     start_response,
-                    status_code=200,
                     headers=headers
                 )
-            if method == 'HEAD':
+            elif method == 'HEAD':
                 # Hacky way to ensure we've initialized GET headers (for now)
                 get_handler = getattr(resource, 'get_handler')
                 response_data = get_handler(query, params)
                 resource_methods = self.resources[type(resource).__name__]['methods']
                 return Response.response(
                     start_response,
-                    status_code=200,
                     headers=response_data.get('headers')
                 )
 
@@ -57,18 +73,17 @@ class Api:
                 '{method}_handler'.format(method=method.lower())
             )
 
-            response_data = method_handler(query, params)
-            body = response_data.get('body', '')
+            response_data = method_handler(query, **params)
             return Response.response(
                 start_response,
-                status_code=response_data.get('status'),
+                status_code=response_data.get('status_code'),
                 headers=response_data.get('headers'),
-                body=body
+                body=response_data.get('body', '')
             )
         else:
             return Response.response(
                 start_response,
-                404
+                status_code=404
             )
 
     def methods(self, route_methods):
@@ -86,9 +101,19 @@ class Api:
 
     def route(self, route):
         def __decorator(cls):
-            self.routes[route] = cls()
+            pattern = self.__class__.build_route_pattern(route)
+            self.routes.append({
+                'pattern': pattern,
+                'resource': cls()
+            })
             return cls
         return __decorator
+
+    def match_route(self, path):
+        for route in self.routes:
+            match = re.match(route['pattern'], path)
+            if match:
+                return route['resource'], match.groupdict()
 
     # Headers
 
