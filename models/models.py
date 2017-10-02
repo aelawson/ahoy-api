@@ -19,14 +19,6 @@ class Plan(Model):
 
 class Release(Model):
 
-    @has_one('foreign_key')
-    def project(self):
-        return Project
-
-    @has_one('foreign_key')
-    def project(self):
-        return Stage
-
     @belongs_to('foreign_key')
     def plan(self):
         return Plan
