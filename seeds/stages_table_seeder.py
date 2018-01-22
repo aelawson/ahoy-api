@@ -7,14 +7,14 @@ class StagesTableSeeder(Seeder):
         Run the database seeds.
         """
         self.db.table('stages').insert({
-            'stage_name': 'Develop',
-            'stage_order': 1
+            'name': 'Develop',
+            'order': 1
         })
         self.db.table('stages').insert({
-            'stage_name': 'Staging',
-            'stage_order': 2
+            'name': 'Staging',
+            'order': 2
         })
         self.db.table('stages').insert({
-            'stage_name': 'Production',
-            'stage_order': 3
+            'name': 'Production',
+            'order': 3
         })
