@@ -8,7 +8,7 @@ class CreateTableTeams(Migration):
         """
         with self.schema.create('teams') as table:
             table.increments('id').unsigned()
-            table.string('team_name', 100)
+            table.string('name', 100)
             table.timestamps()
 
     def down(self):
