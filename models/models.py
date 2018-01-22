@@ -3,13 +3,13 @@ from orator.orm import has_one, has_many, belongs_to, belongs_to_many
 
 class Team(Model):
 
-    @has_one('id')
+    @has_one('team_id')
     def plan(self):
         return Plan
 
 class Plan(Model):
 
-    @has_many('id')
+    @has_many('plan_id')
     def releases(self):
         return Release
 
@@ -19,11 +19,11 @@ class Plan(Model):
 
 class Release(Model):
 
-    @belongs_to('release_id')
+    @belongs_to('plan_id')
     def plan(self):
         return Plan
 
-    @belongs_to('id')
+    @belongs_to('stage_id')
     def stage(self):
         return Stage
 
