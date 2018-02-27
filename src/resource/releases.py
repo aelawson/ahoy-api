@@ -33,7 +33,7 @@ class ReleaseResource(BaseResource):
 
 @api.route('/teams/plans/releases/<release_id>/cut/')
 @api.methods(['HEAD', 'OPTIONS', 'POST'])
-class ReleaseActionResource(BaseResource):
+class CutActionResource(BaseResource):
 
     @api.json
     def post(*args, **kwargs):
@@ -50,6 +50,29 @@ class ReleaseActionResource(BaseResource):
             raise e
 
         next_stage = Stage.where('name', '=', 'Staging').first()
+        release.stage_id = next_stage.id
+        release.save()
+
+        return {
+            'status_code': 200
+        }
+
+@api.route('/teams/plans/releases/<release_id>/release/')
+@api.methods(['HEAD', 'OPTIONS', 'POST'])
+class ReleaseActionResource(BaseResource):
+
+    @api.json
+    def post(*args, **kwargs):
+        release_id = kwargs.get('release_id')
+
+        release = Release.find(release_id)
+
+        try:
+            ReleaseService.release(release)
+        except Exception as e:
+            raise e
+
+        next_stage = Stage.where('name', '=', 'Production').first()
         release.stage_id = next_stage.id
         release.save()
 
