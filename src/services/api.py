@@ -36,13 +36,12 @@ class Api:
 
     def handle_request(self, start_response, env):
         method = env.get('REQUEST_METHOD')
-        query = env.get('QUERY_STRING')
         path = env.get('RAW_URI')
 
         route_match = self.match_route(path)
 
         if route_match:
-            resource, params = route_match
+            resource, path_params = route_match
             methods = self.resources[type(resource).__name__].get('methods')
             if not methods or method not in methods:
                 return Response.response(
@@ -61,7 +60,7 @@ class Api:
             elif method == 'HEAD':
                 # Hacky way to ensure we've initialized GET headers (for now)
                 get_handler = getattr(resource, 'get_handler')
-                response_data = get_handler(query, params)
+                response_data = get_handler(env)
                 resource_methods = self.resources[type(resource).__name__]['methods']
                 return Response.response(
                     start_response,
@@ -73,7 +72,7 @@ class Api:
                 '{method}_handler'.format(method=method.lower())
             )
 
-            response_data = method_handler(query, **params)
+            response_data = method_handler(env, **path_params)
             return Response.response(
                 start_response,
                 status_code=response_data.get('status_code'),
