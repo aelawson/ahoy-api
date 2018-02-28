@@ -4,3 +4,4 @@ pytest
 orator
 psycopg2
 celery
+redis
