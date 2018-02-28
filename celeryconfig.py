@@ -13,8 +13,8 @@ result_backend = 'redis://{host}:{port}/{database}'.format(
 result_expires = None
 accept_content = ['application/json']
 include = [
-    'tasks.release',
-    'tasks.cut'
+    'src.tasks.release',
+    'src.tasks.cut'
 ]
 enable_utc = True
 
