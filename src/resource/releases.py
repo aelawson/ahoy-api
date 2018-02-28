@@ -4,6 +4,7 @@ from src.resource.base import BaseResource
 from src.services.api import api
 from src.services.db import db
 from src.services.release import ReleaseService
+from src.tasks.cut import cut
 
 @api.route('/teams/plans/<plan_id>/releases/')
 @api.methods(['HEAD', 'OPTIONS', 'GET'])
@@ -37,24 +38,18 @@ class CutActionResource(BaseResource):
 
     @api.json
     def post(*args, **kwargs):
-        release_id = kwargs.get('release_id')
-        major = kwargs.get('major')
-        minor = kwargs.get('minor')
-        patch = kwargs.get('patch')
 
-        release = Release.find(release_id)
+        task_metadata = {
+            'release_id': kwargs.get('release_id'),
+            'tag': kwargs.get('tag')
+        }
 
-        try:
-            ReleaseService.cut(release, major, minor, patch)
-        except Exception as e:
-            raise e
-
-        next_stage = Stage.where('name', '=', 'Staging').first()
-        release.stage_id = next_stage.id
-        release.save()
+        cut.apply_async(
+            kwargs={ 'task_metadata': task_metadata }
+        )
 
         return {
-            'status_code': 200
+            'status_code': 204
         }
 
 @api.route('/teams/plans/releases/<release_id>/release/')
