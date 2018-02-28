@@ -1,4 +1,6 @@
-import random, string
+import random
+import string
+import os
 
 from git import Repo
 
@@ -8,22 +10,7 @@ class ReleaseService:
 
     @classmethod
     def cut(cls, release, major=None, minor=None, patch=None):
-        alphabet = (string.ascii_uppercase +
-            string.ascii_lowercase + string.digits)
-        write_dir = ''.join(
-            random.choice(alphabet) for _ in range(16)
-        )
-
-        repo = Repo.clone_from(
-            release.repo_url,
-            '/tmp/{dir}'.format(dir=write_dir),
-            branch='develop'
-        )
-
-        with repo.config_writer() as cw:
-            cw.set_value('user', 'email', Config['git']['email'])
-            cw.set_value('user', 'name', Config['git']['author'])
-
+        repo = cls.__init_repo(release)
         git = repo.git
 
         next_tag = cls.__get_next_tag(repo.tags, major, minor, patch)
@@ -34,22 +21,7 @@ class ReleaseService:
 
     @classmethod
     def release(cls, release):
-        alphabet = (string.ascii_uppercase +
-            string.ascii_lowercase + string.digits)
-        write_dir = ''.join(
-            random.choice(alphabet) for _ in range(16)
-        )
-
-        repo = Repo.clone_from(
-            release.repo_url,
-            '/tmp/{dir}'.format(dir=write_dir),
-            branch='develop'
-        )
-
-        with repo.config_writer() as cw:
-            cw.set_value('user', 'email', Config['git']['email'])
-            cw.set_value('user', 'name', Config['git']['author'])
-
+        repo = cls.__init_repo(release)
         git = repo.git
 
         last_tag = cls.__get_last_tag(repo.tags)
@@ -60,7 +32,6 @@ class ReleaseService:
 
     @classmethod
     def __get_next_tag(cls, tags, major, minor, patch):
-
         last_tag = cls.__get_last_tag(tags)
         last_major, last_minor, last_patch = last_tag.split('.')
 
@@ -90,3 +61,36 @@ class ReleaseService:
             return next(sorted_tags).path.split('/')[-1]
         except Exception:
             return '0.0.0'
+
+    @classmethod
+    def __init_repo(cls, release):
+        alphabet = (string.ascii_uppercase +
+            string.ascii_lowercase + string.digits)
+        write_dir = ''.join(
+            random.choice(alphabet) for _ in range(16)
+        )
+        url_with_cred = cls.__get_url_cred(release.repo_url)
+
+        repo = Repo.clone_from(
+            url_with_cred,
+            '/tmp/{dir}'.format(dir=write_dir),
+            branch='develop'
+        )
+
+        with repo.config_writer() as cw:
+            cw.set_value('user', 'email', Config['git']['email'])
+            cw.set_value('user', 'name', Config['git']['author'])
+
+        return repo
+
+    @classmethod
+    def __get_url_cred(cls, url):
+        host= url.split('www.')[1].split('.git')[0]
+        token = os.environ['AHOY_TOKEN_GIT']
+
+        return '{proto}://{token}:x-oauth-basic@{host}.git'.format(
+            proto='https',
+            token=token,
+            host=host
+        )
+
