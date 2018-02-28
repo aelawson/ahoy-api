@@ -1,4 +1,11 @@
 git:
   author: Andrew Lawson
   email: aeriklawson@gmail.com
-
+broker:
+  host: backend
+  port: 6379
+  database: 0
+backend:
+  host: backend
+  port: 6379
+  database: 1
