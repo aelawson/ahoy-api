@@ -9,11 +9,14 @@ from src.services.config import Config
 class ReleaseService:
 
     @classmethod
-    def cut(cls, release, major=None, minor=None, patch=None):
+    def cut(cls, release, tag):
         repo = cls.__init_repo(release)
         git = repo.git
 
-        next_tag = cls.__get_next_tag(repo.tags, major, minor, patch)
+        if tag:
+            next_tag = tag
+        else:
+            next_tag = cls.__get_next_tag(repo.tags)
 
         git.checkout('develop')
         git.merge('origin/master')
@@ -31,22 +34,25 @@ class ReleaseService:
         git.tag(next_tag)
 
     @classmethod
-    def __get_next_tag(cls, tags, major, minor, patch):
+    def __get_next_tag(cls, tags, version='major'):
         last_tag = cls.__get_last_tag(tags)
         last_major, last_minor, last_patch = last_tag.split('.')
 
-        if not minor and not patch:
-            major = int(last_major) + 1
-            minor = last_minor
-            patch = last_patch
-        elif minor:
-            major = last_major
-            minor = int(last_minor) + 1
-            patch = last_patch
-        elif patch:
-            major = last_major
-            minor = last_minor
-            patch = int(last_patch) + 1
+        major = int(last_major)
+        minor = int(last_minor)
+        patch = int(last_patch)
+
+        if version == 'major':
+            major += 1
+            minor = 0
+            patch = 0
+        elif version == 'minor':
+            minor += 1
+            patch = 0
+        elif version == 'patch':
+            patch += 1
+        else:
+            raise Exception
 
         tag_strings = map(lambda t: str(t), [major, minor, patch])
 
