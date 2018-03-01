@@ -38,7 +38,6 @@ class CutActionResource(BaseResource):
 
     @api.json
     def post(*args, **kwargs):
-
         task_metadata = {
             'release_id': kwargs.get('release_id'),
             'tag': kwargs.get('tag')
@@ -72,5 +71,5 @@ class ReleaseActionResource(BaseResource):
         release.save()
 
         return {
-            'status_code': 200
+            'status_code': 204
         }
