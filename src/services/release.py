@@ -18,9 +18,11 @@ class ReleaseService:
         else:
             next_tag = cls.__get_next_tag(repo.tags)
 
-        git.checkout('develop')
-        git.merge('origin/master')
+        git.checkout('master')
+        git.merge('origin/develop')
         git.tag(next_tag)
+
+        git.push('origin', next_tag)
 
     @classmethod
     def release(cls, release):
@@ -29,9 +31,10 @@ class ReleaseService:
 
         last_tag = cls.__get_last_tag(repo.tags)
 
-        git.checkout('master')
-        git.merge('develop')
-        git.tag(next_tag)
+        git.checkout('develop')
+        git.merge('origin/master')
+
+        git.push('origin', 'develop')
 
     @classmethod
     def __get_next_tag(cls, tags, version='major'):
