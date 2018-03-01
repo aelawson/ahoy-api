@@ -5,6 +5,7 @@ from src.services.api import api
 from src.services.db import db
 from src.services.release import ReleaseService
 from src.tasks.cut import cut
+from src.tasks.release import release
 
 @api.route('/teams/plans/<plan_id>/releases/')
 @api.methods(['HEAD', 'OPTIONS', 'GET'])
@@ -57,18 +58,13 @@ class ReleaseActionResource(BaseResource):
 
     @api.json
     def post(*args, **kwargs):
-        release_id = kwargs.get('release_id')
+        task_metadata = {
+            'release_id': kwargs.get('release_id')
+        }
 
-        release = Release.find(release_id)
-
-        try:
-            ReleaseService.release(release)
-        except Exception as e:
-            raise e
-
-        next_stage = Stage.where('name', '=', 'Production').first()
-        release.stage_id = next_stage.id
-        release.save()
+        release.apply_async(
+            kwargs={ 'task_metadata': task_metadata }
+        )
 
         return {
             'status_code': 204
