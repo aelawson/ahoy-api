@@ -1,5 +1,6 @@
 # Ahoy API
 [![Build Status](https://travis-ci.org/aelawson/ahoy-api.svg?branch=develop)](https://travis-ci.org/aelawson/ahoy-api)
+[![codecov](https://codecov.io/gh/aelawson/ahoy-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/aelawson/ahoy-api)
 
 ## About
 
