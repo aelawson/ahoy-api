@@ -1,6 +1,5 @@
 gunicorn
 gitpython
-pytest
 orator
 psycopg2
 celery

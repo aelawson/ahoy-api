@@ -8,7 +8,7 @@ parser.add_argument("args", nargs=argparse.REMAINDER)
 args = parser.parse_args()
 
 if args.cmd.lower() == "test":
-    command = "pytest" + ' '.join(args.args)
+    command = "pytest --cov=./" + ' '.join(args.args)
 elif args.cmd.lower() == 'migrate':
     command = 'orator migrate -v -c ./src/services/db_config.py'
 elif args.cmd.lower() == 'migrations':
