@@ -13,6 +13,19 @@ services:
     depends_on:
       - db
       - backend
+  api_test:
+    build:
+      context: ./
+      dockerfile: test/Dockerfile
+    volumes:
+      - .:/opt/app
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      PYTHONUNBUFFERED: "TRUE"
+    depends_on:
+      - api
+    command: ["test"]
   worker:
     build:
       context: .

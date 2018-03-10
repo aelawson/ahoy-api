@@ -10,13 +10,11 @@ RUN apk update \
   && ln -s /usr/bin/python3 /usr/bin/python
 
 # Install any needed packages specified in requirements.txt
-RUN pip3 install --upgrade -r requirements.txt
+RUN pip3 install --upgrade -r requirements_test.txt
 
 # Make port 80 available to the world outside this container
-EXPOSE 8000
-
 ENV PYTHONPATH $PYTHONPATH:/opt/app
 
 # Run app.py when the container launches
 ENTRYPOINT ["python", "run.py"]
-CMD ["run"]
+CMD ["test"]
